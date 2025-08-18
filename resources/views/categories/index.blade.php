@@ -28,14 +28,19 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Image</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($categories as $data)
         <tr>
+
             <td>{{ $data->id }}</td>
             <td>{{ $data->name }}</td>
+            <td>
+                <img src="{{ asset('categoryImage/' . $data->image ) }}" alt=" {{ $data->image }} " style="width:50px; height: auto;">
+            </td>
             <td>
                 <a href="{{ route('categories.edit', ['id' => $data->id]) }}" class="btn btn-sm btn-primary">Edit</a>
 

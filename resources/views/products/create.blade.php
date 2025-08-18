@@ -27,7 +27,7 @@
                     <div class="card-body p-4">
                         <h3 class="card-title text-center mb-4">Create Product</h3>
 
-                        <form action="{{ route('products.store') }}" method="POST">
+                        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
 
 
                             @csrf
@@ -51,7 +51,22 @@
                                     placeholder="Enter price">
                             </div>
 
-                  
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Catgory :</label>
+                                <select name="category_id" id="category_id">
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Upload Imge:</label>
+                                <input type="file" class="form-control" id="image" name="image"
+                                    placeholder="choose your image">
+                            </div>
+
+
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-block">Create</button>
                             </div>

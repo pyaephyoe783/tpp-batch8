@@ -27,6 +27,8 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Category</th>
+                <th>Image</th>
                 <th style="width: 220px;">Actions</th>
             </tr>
         </thead>
@@ -37,6 +39,10 @@
                     <td>{{ $data->name }}</td>
                     <td>{{ $data->description }}</td>
                     <td>${{ $data->price  }}</td>
+                    <td>{{ $data->category->name ?? 'No Category' }}</td>
+                    <td>
+                        <img src="{{ asset('ProductsImage/' . $data->image ) }}" alt=" {{ $data->image }} " style="width:50px; height: auto;">
+                    </td>
                     <td>
                         <a href="{{ route('products.show', $data->id) }}" class="btn btn-info btn-sm">Show</a>
                         <a href="{{ route('products.edit', $data->id) }}" class="btn btn-warning btn-sm">Edit</a>

@@ -26,12 +26,13 @@
   <div class="container mt-5">
     <h1 class="mb-4">+ Category Create</h1>
 
-    <form action="{{ route('categories.store') }}" method="POST" class="w-50">
+    <form action="{{ route('categories.store') }}" method="POST" class="w-50" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">
             <label for="name" class="form-label">Category Name</label>
-            <input type="text" id="name" name="name" class="form-control shadow-none" placeholder="Enter Category Name">
+            <input type="text" id="name" name="name" class="form-control shadow-none" placeholder="Enter Category Name"><br><br>
+            <input type="file" id="image" class="form-control" name="image" >
         </div>
 
         <button type="submit" class="btn btn-success">+ Create</button>
