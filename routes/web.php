@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -83,11 +84,25 @@ Route::prefix('categories')->name('categories.')->controller(CategoryController:
 Route::prefix('products')->name('products.')->controller(ProductController::class)->group(function(){
 
     Route::get('/','index')->name('index');
-    Route::get('/{id}','show')->name('show');
+    Route::get('/{id}/show','show')->name('show');
     Route::get('/create','create')->name('create');
     Route::post('/store','store')->name('store');
     Route::get('/{id}/edit','edit')->name('edit');
     Route::post('/{id}/update','update')->name('update');
+    Route::delete('/{id}/delete','delete')->name('delete');
+
+});
+
+
+//Users
+Route::prefix('users')->name('users.')->controller(UserController::class)->group(function(){
+
+    Route::get('/','index')->name('index');
+    Route::get('/{id}/show','show')->name('show');
+    Route::get('/create','create')->name('create');
+    Route::post('/store','store')->name('store');
+    Route::get('/{id}/edit','edit')->name('edit');
+    Route::put('/{id}/update','update')->name('update');
     Route::delete('/{id}/delete','delete')->name('delete');
 
 });

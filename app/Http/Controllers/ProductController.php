@@ -2,38 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Validated;
 use App\Http\Requests\StoreProductRequest;
+use App\Repositories\Product\ProductRespository;
+use App\Repositories\Product\ProductRepositoryInterface;
 
 class ProductController extends Controller
 {
+    protected $ProductRespository;
+
+    public function __construct(ProductRepositoryInterface $ProductRespository)
+    {
+        $this->ProductRespository = $ProductRespository;
+    }
+
     public function index()
     {
-
-        $products = Product::with('category')->get();
-
+        $products = $this->ProductRespository->index();
         return view('products.index', compact('products'));
+
+        // $products = Product::with('category')->get();
+
+
     }
 
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = $this->ProductRespository->show($id);
+
+        if (!$product) {
+        abort(404, 'Product nottt found');}
 
         return view('products.show', compact('product'));
     }
 
     public function create()
     {
-        $categories = Category::get();
-
+        $categories = Category::all();
         return view('products.create', compact('categories'));
     }
 
     public function store(StoreProductRequest $request)
     {
+
+            $data = $request->validate([
+            'category_id' => 'required',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:1',
+            'status' => 'nullable'
+        ]);
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
@@ -44,49 +66,32 @@ class ProductController extends Controller
 
         }
 
-        Product::create([
-
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'image' => $imageName,
-            'category_id' => $request->category_id,
-            'status' => $request->has('status') ? true : false,
-        ]);
-
-
-
-        return redirect()->route('products.index')->with('success');
+       $this->ProductRespository->store($data);
+        return redirect()->route('products.index');
     }
 
     public function edit($id)
     {
-        $product = Product::find($id);
+        $product = $this->ProductRespository->show($id);
         $categories = Category::all();
         return view('products.edit', compact('product','categories'));
 
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductUpdateRequest $request)
     {
-        $product = Product::find($id);
-        $product->update(
-            [
-                'name' => $request->name,
-                'description' => $request->description,
-                'price' => $request->price,
-                'category_id' => $request->category_id,
-                'status' => $request->status == 'on' ? 1 : 0,
-            ]
-        );
+       $validateData = $request->validated();
 
-        return redirect()->route('products.index')->with('edit success');
+        $validateData['status'] = $request->has('status') ? 1 : 0;
+
+       $category = $this->ProductRespository->update($request->id, $validateData);
+
+        return redirect()->route('products.index');
     }
 
     public function delete($id)
     {
-        $product = Product::find($id);
-        $product->delete();
+        $product = $this->ProductRespository->delete($id);
         return redirect()->route('products.index')->with('delete success');
     }
 }
