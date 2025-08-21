@@ -51,6 +51,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'image' => $imageName,
             'category_id' => $request->category_id,
+            'status' => $request->has('status') ? true : false,
         ]);
 
 
@@ -73,8 +74,9 @@ class ProductController extends Controller
             [
                 'name' => $request->name,
                 'description' => $request->description,
-                'price' => $request->price, 
+                'price' => $request->price,
                 'category_id' => $request->category_id,
+                'status' => $request->status == 'on' ? 1 : 0,
             ]
         );
 

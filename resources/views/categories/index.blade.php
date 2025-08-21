@@ -44,8 +44,12 @@
             <td>
                 <a href="{{ route('categories.edit', ['id' => $data->id]) }}" class="btn btn-sm btn-primary">Edit</a>
 
+                <a href="{{ route('categories.show', ['id' => $data->id]) }}" class="btn btn-sm btn-primary">Show</a>
+
+
                 <form action="{{ route('categories.delete', ['id' => $data->id]) }}" method="POST" style="display:inline;">
                     @csrf
+                    @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                 </form>
             </td>

@@ -60,6 +60,12 @@
                                 </select>
                             </div>
 
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="status" name="status"
+                                    value="nullable" checked>
+                                <label class="form-check-label" for="status">Active</label>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="image" class="form-label">Upload Imge:</label>
                                 <input type="file" class="form-control" id="image" name="image"

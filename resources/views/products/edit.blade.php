@@ -41,10 +41,18 @@
                                     value="{{ $product->price }}" placeholder="Enter price">
                             </div>
 
+                             <div class="mb-3">
+                                <label for="Status" class="form-label">Status:: </label>
+                                <input type="checkbox" class="form-check-input" id="status" role="switch" name="status"
+                                    {{ $product->status === 1 ? 'checked' : ' ' }}>
+                            </div>
+
                             <div class="mb-3">
                                 <img src="{{ asset('ProductsImage/' . $product->image) }}" alt="{{ $product->image }}"
                                     style="width: 100px; height: auto;" />
                             </div>
+
+
 
                             <div class="mb-3">
                                 <label for="category_id" class="form-label">Category</label>
@@ -57,10 +65,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
-
-
-
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-block">Update:</button>
                             </div>

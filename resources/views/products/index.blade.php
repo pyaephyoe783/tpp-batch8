@@ -28,6 +28,7 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Category</th>
+                <th>Status</th>
                 <th>Image</th>
                 <th style="width: 220px;">Actions</th>
             </tr>
@@ -40,6 +41,7 @@
                     <td>{{ $data->description }}</td>
                     <td>${{ $data->price  }}</td>
                     <td>{{ $data->category->name ?? 'No Category' }}</td>
+                    <td>{{ $data->status ? 'Active' : 'Suspend' }}</td>
                     <td>
                         <img src="{{ asset('ProductsImage/' . $data->image ) }}" alt=" {{ $data->image }} " style="width:50px; height: auto;">
                     </td>

@@ -70,10 +70,11 @@ Route::get('/articles', [ArticleController::class, 'index']);
 Route::prefix('categories')->name('categories.')->controller(CategoryController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');
+    Route::get('/{id}/show','show')->name('show');
     Route::post('/store', 'store')->name('store');
     Route::get('/{id}/edit', 'edit')->name('edit');
     Route::post('/{id}/update', 'update')->name('update');
-    Route::post('/{id}', 'delete')->name('delete');
+    Route::delete('/{id}/delete', 'delete')->name('delete');
 });
 
 
@@ -82,7 +83,7 @@ Route::prefix('categories')->name('categories.')->controller(CategoryController:
 Route::prefix('products')->name('products.')->controller(ProductController::class)->group(function(){
 
     Route::get('/','index')->name('index');
-    Route::get('/{id}/show','show')->name('show');
+    Route::get('/{id}','show')->name('show');
     Route::get('/create','create')->name('create');
     Route::post('/store','store')->name('store');
     Route::get('/{id}/edit','edit')->name('edit');
