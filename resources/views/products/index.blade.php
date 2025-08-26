@@ -1,24 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.master')
+@section('content')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Product List</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-
-<body>
-    <div class="d-flex justify-content-between align-items-center mb-3 container mt-5">
-        <div></div>
-        <a href="{{ route('products.create') }}" class="btn btn-success">+ Create</a>
-    </div>
 
 
 <div class="container">
     <h1 class="mb-4">Product List</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3 container mt-5 mx-auto">
+                <a href="{{ route('products.create') }}" class="btn btn-success">+ Create</a>
+    </div>
 
     <table class="table table-striped table-bordered align-middle">
         <thead class="table-dark">
@@ -41,14 +30,31 @@
                     <td>{{ $data->description }}</td>
                     <td>${{ $data->price  }}</td>
                     <td>{{ $data->category->name ?? 'No Category' }}</td>
-                    <td>{{ $data->status ? 'Active' : 'Suspend' }}</td>
+                            <th>
+                            {{-- @if ($data->status === 1)
+                                <span class="text-success">Active</span>
+                            @else
+                                <span class="text-danger">Suspend</span>
+                            @endif --}}
+                            <form action="{{ route('products.status', ['id' => $data->id]) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-sm {{ $data->status === 1 ? "btn-success" : "btn-danger" }}">
+                                    {{ $data->status === 1 ? "Active" : "Suspened"  }}
+                                </button>
+                            </form>
+                        </th>
                     <td>
                         <img src="{{ asset('ProductsImage/' . $data->image ) }}" alt=" {{ $data->image }} " style="width:50px; height: auto;">
                     </td>
                     <td>
-                        <a href="{{ route('products.show', $data->id) }}" class="btn btn-info btn-sm">Show</a>
-                        <a href="{{ route('products.edit', $data->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('products.delete', $data->id) }}" method="POST" class="d-inline">
+                        @can('productList')
+                            <a href="{{ route('products.show', $data->id) }}" class="btn btn-info btn-sm">Show</a>
+                        @endcan
+                        @can('productUpdate')
+                            <a href="{{ route('products.edit', $data->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        @endcan
+                        @can('productDelete')
+                            <form action="{{ route('products.delete', $data->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm"
@@ -56,6 +62,7 @@
                                 Delete
                             </button>
                         </form>
+                        @endcan
                     </td>
                 </tr>
             @endforeach
@@ -66,6 +73,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
     </script>
-</body>
 
-</html>
+
+
+
+
+@endsection

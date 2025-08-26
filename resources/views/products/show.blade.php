@@ -1,3 +1,6 @@
+@extends('layouts.master')
+@section('content')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,3 +47,6 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
 </body>
 </html>
+
+
+@endsection

@@ -8,16 +8,24 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Validated;
 use App\Http\Requests\StoreProductRequest;
+use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\Product\ProductRespository;
 use App\Repositories\Product\ProductRepositoryInterface;
+use App\Services\Products\ProductService;
 
 class ProductController extends Controller
 {
     protected $ProductRespository;
+    protected $CategoryReposittory;
+    protected $ProductService;
 
-    public function __construct(ProductRepositoryInterface $ProductRespository)
+    public function __construct(ProductRepositoryInterface $ProductRespository,CategoryRepositoryInterface $CategoryRepository ,ProductService $ProductService)
     {
         $this->ProductRespository = $ProductRespository;
+        $this->CategoryReposittory = $CategoryRepository;
+        $this->ProductService = $ProductService;
+        $this->middleware('auth');
+
     }
 
     public function index()
@@ -35,7 +43,8 @@ class ProductController extends Controller
         $product = $this->ProductRespository->show($id);
 
         if (!$product) {
-        abort(404, 'Product nottt found');}
+            abort(404, 'Product nottt found');
+        }
 
         return view('products.show', compact('product'));
     }
@@ -49,7 +58,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
 
-            $data = $request->validate([
+        $data = $request->validate([
             'category_id' => 'required',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -66,7 +75,7 @@ class ProductController extends Controller
 
         }
 
-       $this->ProductRespository->store($data);
+        $this->ProductRespository->store($data);
         return redirect()->route('products.index');
     }
 
@@ -74,17 +83,16 @@ class ProductController extends Controller
     {
         $product = $this->ProductRespository->show($id);
         $categories = Category::all();
-        return view('products.edit', compact('product','categories'));
-
+        return view('products.edit', compact('product', 'categories'));
     }
 
     public function update(ProductUpdateRequest $request)
     {
-       $validateData = $request->validated();
+        $validateData = $request->validated();
 
         $validateData['status'] = $request->has('status') ? 1 : 0;
 
-       $category = $this->ProductRespository->update($request->id, $validateData);
+        $category = $this->ProductRespository->update($request->id, $validateData);
 
         return redirect()->route('products.index');
     }
@@ -93,5 +101,12 @@ class ProductController extends Controller
     {
         $product = $this->ProductRespository->delete($id);
         return redirect()->route('products.index')->with('delete success');
+    }
+
+    public function status($id)
+    {
+        $this->ProductService->status($id);
+
+        return redirect()->route('products.index');
     }
 }

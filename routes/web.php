@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\PermissionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -90,6 +92,7 @@ Route::prefix('products')->name('products.')->controller(ProductController::clas
     Route::get('/{id}/edit','edit')->name('edit');
     Route::post('/{id}/update','update')->name('update');
     Route::delete('/{id}/delete','delete')->name('delete');
+    Route::post('/{id}/status', 'status')->name('status');
 
 });
 
@@ -104,6 +107,24 @@ Route::prefix('users')->name('users.')->controller(UserController::class)->group
     Route::get('/{id}/edit','edit')->name('edit');
     Route::put('/{id}/update','update')->name('update');
     Route::delete('/{id}/delete','delete')->name('delete');
+    Route::post('/{id}/status', 'status')->name('status');
 
 });
+
+Route::resource('roles', RoleController::class);
+
+Route::resource('permission',PermissionController::class);
+
+
+Auth::routes(['register' => false]);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+
+
+
+
 

@@ -18,6 +18,7 @@ class CategoryController extends Controller
     public function __construct(CategoryRepositoryInterface $categoryRepo)
     {
             $this->categoryRepo = $categoryRepo;
+            $this->middleware('auth');
     }
 
 
@@ -50,6 +51,8 @@ class CategoryController extends Controller
             $imageName = time() . '.' . $request->image->extension();
 
             $request->image->move(public_path('categoryImage'),$imageName);
+
+            $data = array_merge($data, ['image' => $imageName]);
 
         }
 

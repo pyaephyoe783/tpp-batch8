@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create User</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+@extends('layouts.master')
+
+@section('content')
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -17,29 +11,35 @@
                 <div class="card-body">
                     <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+                            <label class="form-label">Name</label>
+                            <input type="text" name="name" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea class="form-control" id="address" name="address" placeholder="Enter address" rows="3" required></textarea>
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Phone</label>
-                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone number" required>
+                            <label class="form-label">Address</label>
+                            <textarea name="address" class="form-control" rows="3" required></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label for="gender" class="form-label">Gender</label>
-                            <select class="form-select" id="gender" name="gender" required>
+                            <label class="form-label">Phone</label>
+                            <input type="text" name="phone" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label>
+                            <select name="gender" class="form-select" required>
                                 <option value="" selected disabled>Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
@@ -48,26 +48,29 @@
                         </div>
 
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="status" name="status" checked>
-                            <label class="form-check-label" for="status">Active</label>
+                            <input type="checkbox" name="status" class="form-check-input" checked>
+                            <label class="form-check-label">Active</label>
                         </div>
 
                         <div class="mb-3">
-                            <label for="image" class="form-label">Upload Image</label>
-                            <input type="file" class="form-control" id="image" name="image">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" name="image" class="form-control">
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-success">Create User</button>
+                        <div class="mb-3">
+                            <label class="form-label">Assign Roles</label>
+                            <select name="roles[]" class="form-select" multiple>
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
+
+                        <button type="submit" class="btn btn-success">Create User</button>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endsection

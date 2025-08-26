@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Requests\UserUpdateRequest;
 use App\Repositories\User\UserRepositoryInterface;
 
 class UserController extends Controller
@@ -13,6 +14,7 @@ class UserController extends Controller
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
+        $this->middleware('auth');
     }
 
     public function index()
@@ -29,32 +31,40 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all();
+        return view('users.create',compact('roles'));
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'address' => 'required|string',
-            'phone' => 'required|string|max:15',
-            'gender' => 'required|in:male,female,other',
-            'status' => 'boolean',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6|confirmed',
+        'address' => 'required|string',
+        'phone' => 'required|string|max:15',
+        'gender' => 'required|in:male,female,other',
+        'status' => 'boolean',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'roles' => 'nullable|array'
+    ]);
 
-        ]);
+    $data['status'] = $request->has('status') ? 1 : 0;
+    $data['password'] = bcrypt($data['password']);
 
-        $data['status'] = $request->has('status') ? 1 : 0;
+    if ($request->hasFile('image')) {
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('UsersImage'), $imageName);
+        $data['image'] = $imageName;
+    }
 
-        if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
+    $user = $this->userRepository->store($data);
 
-            $request->image->move(public_path('UsersImage'), $imageName);
-        }
+    if ($request->has('roles')) {
+        $user->assignRole($request->roles);
+    }
 
-        $this->userRepository->store($data);
-        return redirect()->route('users.index');
+    return redirect()->route('users.index');
     }
 
     public function edit($id)
@@ -79,5 +89,15 @@ class UserController extends Controller
     {
         $user = $this->userRepository->delete($id);
         return redirect()->route('users.index')->with('delete success');
+    }
+
+    public function status($id)
+    {
+        $user = $this->userRepository->show($id);
+
+        $userStatus = $user->status == 1 ? 0 : 1;
+        $this->userRepository->update($id, ['status' => $userStatus]);
+        return redirect()->route('users.index');
+
     }
 }
