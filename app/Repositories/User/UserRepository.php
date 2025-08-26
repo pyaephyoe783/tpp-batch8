@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -18,6 +19,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function store($data)
     {
+        $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
         return $user;
     }
@@ -28,7 +30,7 @@ class UserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    
+
     public function update($id, $data)
     {
         $user = User::find($id);
