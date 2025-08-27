@@ -1,3 +1,5 @@
+@extends('layouts.master')
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,12 +28,13 @@
   <div class="container mt-5">
     <h1 class="mb-4">+ Category Create</h1>
 
-    <form action="{{ route('categories.store') }}" method="POST" class="w-50">
+    <form action="{{ route('categories.store') }}" method="POST" class="w-50" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">
             <label for="name" class="form-label">Category Name</label>
-            <input type="text" id="name" name="name" class="form-control shadow-none" placeholder="Enter Category Name">
+            <input type="text" id="name" name="name" class="form-control shadow-none" placeholder="Enter Category Name"><br><br>
+            <input type="file" id="image" class="form-control" name="image" >
         </div>
 
         <button type="submit" class="btn btn-success">+ Create</button>
@@ -42,3 +45,5 @@
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 </html>
+
+@endsection
