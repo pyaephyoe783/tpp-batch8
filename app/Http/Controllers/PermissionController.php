@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use Spatie\Permission\Contracts\Role;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 
@@ -13,9 +15,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::all();
-
-        return view('permissions.index',compact('permissions'));
+        $permissions = Permission::all();   // permission table ထဲရှိ row တွေခေါ်
+        return view('permissions.index', compact('permissions'));
     }
 
     /**
@@ -38,7 +39,6 @@ class PermissionController extends Controller
         ]);
 
         return redirect()->route('permission.index');
-
     }
 
     /**
@@ -54,9 +54,12 @@ class PermissionController extends Controller
      */
     public function edit(string $id)
     {
-       $permission = Permission::find($id);
+        $permission = Permission::find($id);
+        $roles = Role::all();
 
-       return view('permissions.edit',compact('permission'));
+        $assignRoles = $permission->roles->pluck('name');
+
+        return view('permissions.edit', compact('permission','roles','assignRoles'));
     }
 
     /**
@@ -64,7 +67,7 @@ class PermissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,',
         ]);
 
@@ -85,8 +88,6 @@ class PermissionController extends Controller
 
         $permission->delete($id);
 
-        return redirect()->route('permission.index',compact('permission'));
-
-
+        return redirect()->route('permission.index', compact('permission'));
     }
 }
