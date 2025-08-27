@@ -24,6 +24,8 @@ class RoleAndPermissionSeeder extends Seeder
         $productUpdate = Permission::create(['name' => 'productUpdate']);
         $productDelete = Permission::create(['name' => 'productDelete']);
 
+        // $userCreate = Permission::create((['name'=>'userCreate']));
+
 
         $admin->givePermissionTo([
             $categoryList,

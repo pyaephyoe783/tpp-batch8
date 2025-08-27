@@ -17,7 +17,8 @@
                         <h3>Edit User</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('users.update',$user->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('users.update', $user->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
@@ -56,8 +57,22 @@
                             </div>
 
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="status" name="status" value="1" {{ $user->status ? 'checked' : '' }} >
+                                <input type="checkbox" class="form-check-input" id="status" name="status"
+                                    value="1" {{ $user->status ? 'checked' : '' }}>
                                 <label class="form-check-label" for="status">Active</label>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select class="form-select" id="role" name="role" required>
+                                    <option value="" disabled>Select Role</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}"
+                                            {{ $user->hasRole($role->name) ? 'selected' : '' }}>
+                                            {{ $role->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="mb-3">

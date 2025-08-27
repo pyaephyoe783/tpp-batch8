@@ -57,7 +57,8 @@
                             </div>
 
                             <div class="mb-3 form-check">
-                                <input type="checkbox" name="status" class="form-check-input" checked>
+                                <input type="hidden" name="status" value="0">
+                                <input type="checkbox" name="status" class="form-check-input" value="1" checked>
                                 <label class="form-check-label">Active</label>
                             </div>
 

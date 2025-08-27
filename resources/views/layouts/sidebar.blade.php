@@ -57,6 +57,7 @@
                         </a>
                     {{-- @endcan --}}
                 </li>
+               @role('Admin')
                 <li>
                     <a href="{{ route('users.index') }}">
                         Users
@@ -72,6 +73,7 @@
                         Permission
                     </a>
                 </li>
+               @endrole
 
             </ul>
         </div>

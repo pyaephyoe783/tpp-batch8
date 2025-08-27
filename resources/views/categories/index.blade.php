@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    
+
     <div class="container border border-primary p-5 w-[200px]" >
         <h1 class="mb-3">Category List</h1>
         <a href="{{ route('categories.create') }}" class="btn btn-outline-primary mb-5">+Create</a>
@@ -32,16 +32,23 @@
                 <img src="{{ asset('categoryImage/' . $data->image ) }}" alt=" {{ $data->image }} " style="width:50px; height: auto;">
             </td>
             <td>
-                <a href="{{ route('categories.edit', ['id' => $data->id]) }}" class="btn btn-sm btn-primary">Edit</a>
 
+               @can('categoryUpdate	')
+                     <a href="{{ route('categories.edit', ['id' => $data->id]) }}" class="btn btn-sm btn-primary">Edit</a>
+               @endcan
+
+
+                @can('categoryList')
                 <a href="{{ route('categories.show', ['id' => $data->id]) }}" class="btn btn-sm btn-primary">Show</a>
+                @endcan
 
-
+                @can('categoryDelete')
                 <form action="{{ route('categories.delete', ['id' => $data->id]) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                 </form>
+                @endcan
             </td>
         </tr>
         @endforeach
