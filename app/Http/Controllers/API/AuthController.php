@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-// use Dotenv\Validator;
 use App\Http\Controllers\API\BaseController;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use App\Repositories\User\UserRepositoryInterface;
@@ -20,25 +19,18 @@ class AuthController extends BaseController
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
-        // $this->middleware('auth');
     }
     public function login(Request $request)
     {
         try {
             $credentils = $request->only(['email', 'password']);
-            // dd($credentils);
             if (!JWTAuth::attempt($credentils)) {
-                // dd('hello');
                 return $this->error("Your Email & Password is wrong", null, 401);
             }
 
 
 
             $user = User::where('email', $credentils['email'])->first();
-
-            // dd($user);
-
-
             $payload = [
                 'id' => $user->id,
                 'name' => $user->name,

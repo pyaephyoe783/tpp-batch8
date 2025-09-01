@@ -70,9 +70,6 @@ class ProductController extends Controller
             $imageName = time() . '.' . $request->image->extension();
 
             $request->image->move(public_path('ProductsImage'), $imageName);
-
-            // dd($imageName);
-
         }
 
         $this->ProductRespository->store($data);

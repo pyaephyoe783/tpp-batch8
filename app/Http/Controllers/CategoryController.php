@@ -24,10 +24,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        // $categories = Category::all();
-        // dd($categories);
-
-        $categories = $this->categoryRepo->index();
+      $categories = $this->categoryRepo->index();
 
         return view('categories.index', compact('categories'));
     }
@@ -58,17 +55,6 @@ class CategoryController extends Controller
 
         $this->categoryRepo->store($data);
         return redirect()->route('categories.index');
-
-        // Category::create([
-
-        //     'name' => $request -> name,
-        //     'image' => $imageName,
-        // ]);
-           // Category::create($request->validated());
-           // $data = $request->validate([
-        //     'name'=> 'required|string',
-        //     'image' => 'required',
-        // ]);
     }
 
     public function show($id)
@@ -80,16 +66,12 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        // dd($id);
         $category = $this->categoryRepo->show($id);
         return view('categories.edit', compact('category'));
     }
 
     public function update(CategoryUpdateRequest $request)
     {
-        // dd($request->all());
-        // $category = Category::find($request->id);
-
         $validateData = $request->validated();
 
        $category = $this->categoryRepo->update($request->id, $validateData);
@@ -99,15 +81,8 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
-        // dd('here');
-        // dd($id);
-        // $category = Category::find($id);
-        // $category->delete();
-
-
         $cateory = $this->categoryRepo->destory($id);
 
         return redirect()->route('categories.index');
-        // dd($category);
     }
 }

@@ -40,8 +40,6 @@ class UserController extends Controller
 
     public function store(CreateUserRequest $request)
     {
-
-        // dd($request->all());
         $validateData = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -59,50 +57,7 @@ class UserController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
-
-
-
-        // $data = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|email',
-        //     'password' => 'required|string|min:8|confirmed',
-        //     'address' => 'required|string',
-        //     'phone' => 'required|string|max:15',
-        //     'gender' => 'required|in:male,female,other',
-        //     'status' => 'boolean',
-        //     'roles' => 'nullable|array',
-        //     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-
-        // ]);
-
-        // dd($request->all());
-
-        // // if (isset($data['roles'])) {
-        // //     unset($data['roles']);
-        // // }
-
-        // $data['status'] = $request->has('status') ? 1 : 0;
-        // $data['password'] = Hash::make($data['password']);
-        // //    $data['roles'] = implode(',',$data['roles']);
-
-        // if ($request->hasFile('image')) {
-        //     $imageName = time() . '.' . $request->image->extension();
-        //     $request->image->move(public_path('UsersImage'), $imageName);
-        //     $data['image'] = $imageName;
-        // }
-
-        // // if (isset($data['roles']) && is_array($data['roles'])) {
-        // //     $user = $this->userRepository->store($data);
-        // //     $user->syncRoles($data['roles']);
-        // // } else {
-        // //     $user = $this->userRepository->store($data);
-        // // }
-
-        // $user = $this->userRepository->store($data);
-        // $user->syncRoles($request->roles);
-
-
-
+        
         return redirect()->route('users.index');
     }
 

@@ -58,10 +58,7 @@ class CategoryController extends Controller
         }
     }
 
-    // GET /api/categories/{id}
 
-
-    // PUT /api/categories/{id}
     public function update(Request $request, $id)
     {
         try {
@@ -82,8 +79,7 @@ class CategoryController extends Controller
             return $this->error("Category not found or error occurred", null, 500);
         }
     }
-
-    // DELETE /api/categories/{id}
+    
     public function destroy($id)
     {
         try {
