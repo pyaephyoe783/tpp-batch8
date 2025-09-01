@@ -15,7 +15,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::all();   // permission table ထဲရှိ row တွေခေါ်
+        $permissions = Permission::all();
         return view('permissions.index', compact('permissions'));
     }
 

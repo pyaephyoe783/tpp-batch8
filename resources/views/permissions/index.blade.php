@@ -11,7 +11,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Permission Name</th>
-                    <th>Role Access</th>
+                    {{-- <th>Role Access</th> --}}
                     <th>Action</th>
                 </tr>
             </thead>
@@ -20,6 +20,14 @@
                     <tr>
                         <td>{{ $permission->id }}</td>
                         <td>{{ $permission->name }}</td>
+                        {{-- <td>
+                            @if ($permission->roles)
+                                @foreach ($permission->roles as $role)
+                                    <span class="badge bg-secondary">{{ $role->name }}</span>
+                                @endforeach
+
+                            @endif
+                        </td> --}}
                         <td>
                             <a href="{{ route('permission.edit', $permission->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
@@ -35,7 +43,5 @@
                 @endforeach
             </tbody>
         </table>
-
-
     </div>
 @endsection
