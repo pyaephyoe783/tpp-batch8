@@ -1,9 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PermissionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,10 +73,11 @@ Route::get('/articles', [ArticleController::class, 'index']);
 Route::prefix('categories')->name('categories.')->controller(CategoryController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');
+    Route::get('/{id}/show','show')->name('show');
     Route::post('/store', 'store')->name('store');
     Route::get('/{id}/edit', 'edit')->name('edit');
     Route::post('/{id}/update', 'update')->name('update');
-    Route::post('/{id}', 'delete')->name('delete');
+    Route::delete('/{id}/delete', 'delete')->name('delete');
 });
 
 
@@ -88,6 +92,39 @@ Route::prefix('products')->name('products.')->controller(ProductController::clas
     Route::get('/{id}/edit','edit')->name('edit');
     Route::post('/{id}/update','update')->name('update');
     Route::delete('/{id}/delete','delete')->name('delete');
+    Route::post('/{id}/status', 'status')->name('status');
 
 });
+
+
+//Users
+Route::prefix('users')->name('users.')->controller(UserController::class)->group(function(){
+
+    Route::get('/','index')->name('index');
+    Route::get('/{id}/show','show')->name('show');
+    Route::get('/create','create')->name('create');
+    Route::post('/store','store')->name('store');
+    Route::get('/{id}/edit','edit')->name('edit');
+    Route::put('/{id}/update','update')->name('update');
+    Route::delete('/{id}/delete','delete')->name('delete');
+    Route::post('/{id}/status', 'status')->name('status');
+
+});
+
+Route::resource('roles', RoleController::class);
+
+Route::resource('permission',PermissionController::class);
+
+
+Auth::routes(['register' => false]);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+
+
+
+
 
